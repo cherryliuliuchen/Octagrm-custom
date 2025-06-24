@@ -1,7 +1,18 @@
+# Rider and IDE files
+.idea/
+*.sln.DotSettings*
+*.user
+
+# Build artifacts
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
-Extras/
-.idea
+publish/
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# VSCode settings (optional)
+.vscode/

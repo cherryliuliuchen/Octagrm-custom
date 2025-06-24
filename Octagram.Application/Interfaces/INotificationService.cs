@@ -53,6 +53,14 @@ public interface INotificationService
     /// <param name="postId">The ID of the post that was liked.</param>
     /// <param name="userIdLikingPost">The ID of the user who liked the post.</param>
     Task CreateLikeNotificationAsync(int postId, int userIdLikingPost);
+    
+    /// <summary>
+    /// Creates a notification for a downvote on a post.
+    /// </summary>
+    /// <param name="postId">The ID of the post that was liked.</param>
+    /// <param name="userIdDownvotingPost">The ID of the user who liked the post.</param>
+    Task CreateDownvoteNotificationAsync(int postId, int userIdDownvotingPost);
+
 
     /// <summary>
     /// Creates a notification for a comment on a post.

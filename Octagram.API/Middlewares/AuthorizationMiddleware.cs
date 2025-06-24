@@ -59,7 +59,8 @@ public class AuthorizationMiddleware(
         // access the claims from context.User.Identity
         var claimsIdentity = context.User.Identity as ClaimsIdentity;
         var userName = claimsIdentity?.FindFirst(ClaimTypes.Name)?.Value;
-        var roleClaim = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value;
+        var roleClaim = claimsIdentity?.FindFirst(ClaimTypes.Role)?.Value
+                        ?? claimsIdentity?.FindFirst("role")?.Value;
 
         if (roleClaim == null || !await roleRepository.RoleExistsAsync(roleClaim))
         {

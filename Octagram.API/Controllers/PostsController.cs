@@ -159,6 +159,15 @@ public class PostsController(IPostService postService) : ControllerBase
         await postService.UnlikePostAsync(postId, userId);
         return Ok("Post unliked successfully.");
     }
+    
+    [HttpPost("{postId:int}/downvote")]
+    [AuthorizeMiddleware("User")]
+    public async Task<IActionResult> DownvotePost(int postId)
+    {
+        var userId = GetCurrentUserId();
+        await postService.DownvotePostAsync(postId, userId);
+        return Ok("Post downvoted successfully.");
+    }
 
     /// <summary>
     /// Creates a new comment on a post. Requires authentication.
