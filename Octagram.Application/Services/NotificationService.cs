@@ -29,8 +29,11 @@ public class NotificationService(
             throw new BadRequestException("Sender or recipient not found.");
         }
 
+        Console.WriteLine($"[1] Notification CREATED at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}, Type={notification.Type}");
         await notificationRepository.AddAsync(notification);
+        Console.WriteLine($"[2] Notification SAVED to DB at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
         await notificationPublisher.PublishNotificationAsync(mapper.Map<NotificationDto>(notification));
+        Console.WriteLine($"[3] Notification SENT via SignalR at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
     }
 
     /// <summary>
@@ -152,6 +155,33 @@ public class NotificationService(
 
         await CreateNotificationAsync(notification);
     }
+    
+    /// <summary>
+    /// Creates a notification for a downvote on a post.
+    /// </summary>
+    /// <param name="postId">The ID of the post that was liked.</param>
+    /// <param name="userIdDownvotingPost">The ID of the user who liked the post.</param>
+    /// <exception cref="NotFoundException">Thrown if the post is not found.</exception>
+    
+    public async Task CreateDownvoteNotificationAsync(int postId, int userIdDownvotingPost)
+    {
+        var post = await postRepository.GetByIdAsync(postId); // Need to inject IPostRepository
+
+        if (post == null || post.UserId == userIdDownvotingPost)
+            return; // The post does not exist, or it clicks on itself, no notification will be sent
+
+        var notification = new Notification
+        {
+            RecipientId = post.UserId,
+            SenderId = userIdDownvotingPost,
+            TargetId = postId, 
+            Type = "downvote",
+        };
+
+        await notificationRepository.AddAsync(notification);
+    }
+
+
 
     /// <summary>
     /// Creates a notification for a comment on a post.

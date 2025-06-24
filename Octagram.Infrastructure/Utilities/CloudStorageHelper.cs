@@ -20,23 +20,8 @@ public class CloudStorageHelper(IConfiguration configuration) : ICloudStorageHel
     /// </returns>
     public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string folderName)
     {
-        var blobServiceClient = new BlobServiceClient(_connectionString);
-        var containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
-
-        var blobName = $"{folderName}/{Guid.NewGuid()}_{fileName}";
-        var blobClient = containerClient.GetBlobClient(blobName);
-
-        await blobClient.UploadAsync(fileStream, true);
-
-        return blobClient.Uri.ToString();
-        
-        /*
-        // local storage, just for testing purposes
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", folderName, fileName);
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-        await using var stream = new FileStream(filePath, FileMode.Create);
-        await fileStream.CopyToAsync(stream);
-        return filePath;
-        */
+        await Task.Delay(50);
+        return $"https://mocked-storage.local/{folderName}/{fileName}";
     }
+
 }

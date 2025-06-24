@@ -19,6 +19,7 @@ public static class ServiceExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
+        services.AddScoped<IDownvoteRepository, DownvoteRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<IFollowRepository, FollowRepository>();
         services.AddScoped<IStoryRepository, StoryRepository>();

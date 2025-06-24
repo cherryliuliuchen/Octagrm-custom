@@ -53,7 +53,9 @@ public class AuthService(IUserRepository userRepository, IRefreshTokenRepository
         {
             Username = newUser.Username,
             Email = newUser.Email,
-            PasswordHash = HashPassword(newUser.Password)
+            PasswordHash = HashPassword(newUser.Password),
+            Bio = "",
+            ProfileImageUrl = ""
         };
 
         await userRepository.AddAsync(user);

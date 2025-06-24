@@ -31,9 +31,25 @@ public class Startup(IConfiguration configuration)
         services.AddServices();
         
         // 5. Register SignalR
-        services.AddSignalR();
+        services.AddSignalR(options =>
+        {
+            options.KeepAliveInterval = TimeSpan.FromSeconds(15); 
+            options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+        });
+        
+        // 6. Add CORS
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost5500", builder =>
+            {
+                builder.WithOrigins("http://127.0.0.1:5500") // Live Server 
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials(); // SignalR  credentials
+            });
+        });
 
-        // 6. Configure Swagger
+        // 7. Configure Swagger
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
     }
@@ -48,6 +64,7 @@ public class Startup(IConfiguration configuration)
 
         app.UseHttpsRedirection()
             .UseRouting()
+            .UseCors("AllowLocalhost5500")
             .UseAuthentication()
             .UseAuthorization()
             .UseEndpoints(endpoints =>

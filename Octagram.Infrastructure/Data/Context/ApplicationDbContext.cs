@@ -8,6 +8,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<User> Users { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Like> Likes { get; set; }
+    public DbSet<Downvote> Downvotes { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Follow> Follows { get; set; }
     public DbSet<Story> Stories { get; set; }
@@ -70,6 +71,20 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(l => l.Post)
             .WithMany(p => p.Likes)
             .HasForeignKey(l => l.PostId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        // User - Downvote (One-to-Many)
+        modelBuilder.Entity<Downvote>()
+            .HasOne(d => d.User)
+            .WithMany()
+            .HasForeignKey(d => d.UserId)
+            .OnDelete(DeleteBehavior.Restrict); // To avoide multiple cascade route
+
+        // Post - Downvote (One-to-Many)
+        modelBuilder.Entity<Downvote>()
+            .HasOne(d => d.Post)
+            .WithMany()
+            .HasForeignKey(d => d.PostId)
             .OnDelete(DeleteBehavior.Cascade);
 
         // User - Comment (One-to-Many)

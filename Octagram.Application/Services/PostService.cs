@@ -13,6 +13,7 @@ public class PostService(
     IPostRepository postRepository,
     IUserRepository userRepository,
     ILikeRepository likeRepository,
+    IDownvoteRepository downvoteRepository,
     ICommentRepository commentRepository,
     IHashtagRepository hashtagRepository,
     IPostHashtagRepository postHashtagRepository,
@@ -233,6 +234,22 @@ public class PostService(
         }
 
         await likeRepository.DeleteAsync(like);
+    }
+    
+    
+    public async Task DownvotePostAsync(int postId, int userId)
+    {
+        var existingDownvote = await downvoteRepository.GetDownvoteByUserAndPostIdAsync(userId, postId);
+        if (existingDownvote != null) return;
+
+        var downvote = new Downvote
+        {
+            UserId = userId,
+            PostId = postId
+        };
+
+        await downvoteRepository.AddAsync(downvote);
+        await notificationService.CreateDownvoteNotificationAsync(postId, userId);
     }
 
     /// <summary>

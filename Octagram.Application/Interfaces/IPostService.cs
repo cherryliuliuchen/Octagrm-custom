@@ -74,6 +74,13 @@ public interface IPostService
     /// <param name="postId">The ID of the post to unlike.</param>
     /// <param name="userId">The ID of the user unliking the post.</param>
     Task UnlikePostAsync(int postId, int userId);
+    
+    /// <summary>
+    /// Allows a user to downvote a specific post.
+    /// </summary>
+    /// <param name="postId">The ID of the post to unlike.</param>
+    /// <param name="userId">The ID of the user unliking the post.</param>
+    Task DownvotePostAsync(int postId, int userId);
 
     /// <summary>
     /// Creates a new comment on a specific post.
