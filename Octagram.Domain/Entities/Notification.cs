@@ -23,4 +23,10 @@ public class Notification
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public bool IsRead { get; set; } = false;
+    
+    [Required]
+    public string MessageId { get; set; } = Guid.NewGuid().ToString();
+    
+    [Required]
+    public string Status { get; set; } = "Pending"; // Optional: enum later
 }

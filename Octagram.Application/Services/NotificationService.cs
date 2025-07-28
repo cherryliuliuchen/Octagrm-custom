@@ -5,6 +5,7 @@ using Octagram.Application.Exceptions;
 using Octagram.Application.Interfaces;
 using Octagram.Domain.Entities;
 using Octagram.Domain.Repositories;
+using Octagram.Application.Interfaces;
 
 namespace Octagram.Application.Services;
 
@@ -14,9 +15,12 @@ public class NotificationService(
     ICommentRepository commentRepository,
     IUserRepository userRepository,
     INotificationPublisher notificationPublisher,
-    IMapper mapper)
+    IMapper mapper,
+    ISqsService sqsService
+    )
     : INotificationService
 {
+    private readonly ISqsService _sqsService = sqsService;
     /// <summary>
     /// Creates a new notification.
     /// </summary>
@@ -34,6 +38,16 @@ public class NotificationService(
         Console.WriteLine($"[2] Notification SAVED to DB at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
         await notificationPublisher.PublishNotificationAsync(mapper.Map<NotificationDto>(notification));
         Console.WriteLine($"[3] Notification SENT via SignalR at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
+    }
+    
+    public async Task CreateNotificationAwsAsync(Notification notification)
+    {
+        Console.WriteLine(">>>>>> Entered CreateNotificationAwsAsync");
+        Console.WriteLine($"[1] Notification CREATED at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}, Type={notification.Type}");
+        await notificationRepository.AddAsync(notification);
+        Console.WriteLine($"[2] Notification SAVED to DB at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
+        await _sqsService.SendMessageAsync(notification);
+        Console.WriteLine($"[3] Notification SENT to SQS at {DateTime.UtcNow:O} | MessageId={notification.MessageId}");
     }
 
     /// <summary>
@@ -174,11 +188,18 @@ public class NotificationService(
         {
             RecipientId = post.UserId,
             SenderId = userIdDownvotingPost,
+            Sender = await userRepository.GetByIdAsync(userIdDownvotingPost), 
+            Recipient = await userRepository.GetByIdAsync(post.UserId),       
             TargetId = postId, 
+            MessageId = Guid.NewGuid().ToString(),
+            Status = "Pending",
             Type = "downvote",
+            CreatedAt = DateTime.UtcNow,
+            IsRead = false
         };
-
-        await notificationRepository.AddAsync(notification);
+        Console.WriteLine(">>> Calling CreateNotificationAwsAsync from Downvote...");
+        await CreateNotificationAwsAsync(notification);
+        Console.WriteLine(">>> Downvote notification fully executed");
     }
 
 

@@ -1,10 +1,13 @@
 ﻿using System.Text.Json;
+using Amazon.SQS;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Octagram.API.Filters;
 using Octagram.API.Hubs;
 using Octagram.API.Utilities;
 using Octagram.Infrastructure.Data.Context;
+using Octagram.Application.Interfaces;
+using Octagram.Infrastructure.ExternalServices; 
 
 namespace Octagram.API;
 
@@ -30,14 +33,17 @@ public class Startup(IConfiguration configuration)
         // 4. Register Services
         services.AddServices();
         
-        // 5. Register SignalR
+        // 5. Register SQS Service
+        services.AddScoped<ISqsService, SqsService>();
+        
+        // 6. Register SignalR
         services.AddSignalR(options =>
         {
             options.KeepAliveInterval = TimeSpan.FromSeconds(15); 
             options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
         });
         
-        // 6. Add CORS
+        // 7. Add CORS
         services.AddCors(options =>
         {
             options.AddPolicy("AllowLocalhost5500", builder =>
@@ -49,7 +55,7 @@ public class Startup(IConfiguration configuration)
             });
         });
 
-        // 7. Configure Swagger
+        // 8. Configure Swagger
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
     }

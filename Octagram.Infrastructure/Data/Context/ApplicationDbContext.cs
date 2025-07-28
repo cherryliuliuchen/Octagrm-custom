@@ -73,25 +73,26 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(l => l.PostId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        // User - Downvote (One-to-Many)
+        //User - Downvote (One to Many)
         modelBuilder.Entity<Downvote>()
             .HasOne(d => d.User)
             .WithMany()
             .HasForeignKey(d => d.UserId)
-            .OnDelete(DeleteBehavior.Restrict); // To avoide multiple cascade route
-
-        // Post - Downvote (One-to-Many)
+            .OnDelete(DeleteBehavior.Restrict);
+        
         modelBuilder.Entity<Downvote>()
             .HasOne(d => d.Post)
             .WithMany()
             .HasForeignKey(d => d.PostId)
             .OnDelete(DeleteBehavior.Cascade);
+        
 
-        // User - Comment (One-to-Many)
+
+        // User - Comment (One-to-Many) 
         modelBuilder.Entity<Comment>()
-            .HasOne(c => c.User)
-            .WithMany(u => u.Comments)
-            .HasForeignKey(c => c.UserId)
+            .HasOne(c => c.User)//One Downvote corresponds to one User
+            .WithMany(u => u.Comments)//One user can have many downvote
+            .HasForeignKey(c => c.UserId)//
             .OnDelete(DeleteBehavior.NoAction);
 
         // Post - Comment (One-to-Many)

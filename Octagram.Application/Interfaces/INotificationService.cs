@@ -46,6 +46,11 @@ public interface INotificationService
     /// </summary>
     /// <param name="notification">The notification to be created.</param>
     Task CreateNotificationAsync(Notification notification);
+    
+
+    /// </summary>
+    /// <param name="notification">The notification to be created and sent.</param>
+    Task CreateNotificationAwsAsync(Notification notification);
 
     /// <summary>
     /// Creates a notification for a like on a post.

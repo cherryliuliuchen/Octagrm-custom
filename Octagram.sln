@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octagram.API", "Octagram.API\Octagram.API.csproj", "{1D1A713A-A808-4C7C-9E2B-9ABBD3651056}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octagram.Domain", "Octagram.Domain\Octagram.Domain.csproj", "{0C6BC66E-0EB7-40C9-A477-96D23CEBB03C}"
@@ -7,6 +8,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octagram.Infrastructure", "Octagram.Infrastructure\Octagram.Infrastructure.csproj", "{73738068-1F55-412A-A886-2597C162EC8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octagram.Application", "Octagram.Application\Octagram.Application.csproj", "{61442DEF-2836-4EE7-9CF6-12A7765435ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Octagram.Tests", "Octagram.Tests\Octagram.Tests.csproj", "{F1DDF2D2-5277-4161-BC03-36CE17E39E7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +33,9 @@ Global
 		{61442DEF-2836-4EE7-9CF6-12A7765435ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61442DEF-2836-4EE7-9CF6-12A7765435ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61442DEF-2836-4EE7-9CF6-12A7765435ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DDF2D2-5277-4161-BC03-36CE17E39E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DDF2D2-5277-4161-BC03-36CE17E39E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DDF2D2-5277-4161-BC03-36CE17E39E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DDF2D2-5277-4161-BC03-36CE17E39E7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
