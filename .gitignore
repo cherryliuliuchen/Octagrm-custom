@@ -16,3 +16,6 @@ publish/
 
 # VSCode settings (optional)
 .vscode/
+
+appsettings.json
+.env
