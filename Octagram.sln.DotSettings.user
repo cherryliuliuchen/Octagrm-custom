@@ -2,4 +2,9 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\PRIME\.nuget\packages\sixlabors.imagesharp\3.1.4\lib\net6.0\SixLabors.ImageSharp.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.3\System.ComponentModel.Annotations.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f3baf8a3_002Df340_002D43e1_002D99a9_002D941ad69523b8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="SendMessageAsync_Should_Send_Message_To_SQS" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::F1DDF2D2-5277-4161-BC03-36CE17E39E7B::net8.0::Octagram.Tests.ExternalServices.SqsServiceTests&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

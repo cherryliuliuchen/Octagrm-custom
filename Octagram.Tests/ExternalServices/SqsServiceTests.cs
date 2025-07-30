@@ -1,33 +1,45 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+using Octagram.Application.DTOs;
 using Octagram.Infrastructure.ExternalServices;
-using Octagram.Tests.TestData;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Octagram.Tests.ExternalServices
 {
     public class SqsServiceTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public SqsServiceTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
         [Fact]
         public async Task SendMessageAsync_Should_Send_Message_To_SQS()
         {
-            // Load appsettings.json from Octagram.API
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../../../../Octagrm/Octagram.API"))
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .Build();
 
-            var sqsService = new SqsService(config);
+            var sqsService = new SqsService();
 
-            // Load test notification from shared test data
-            var testNotification = TestNotifications.ValidTestNotification;
+            // Create NotificationDto for testing
+            var testNotificationDto = new NotificationDto
+            {
+                Id = 1,
+                RecipientId = 2,
+                SenderId = 3,
+                Sender = new UserDto { Id = 3, Username = "TestUser" },
+                Type = "downvote",
+                TargetId = 100,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
 
-            await sqsService.SendMessageAsync(testNotification);
+            // ✅ Use SendMessageAsync
+            await sqsService.SendMessageAsync(testNotificationDto);
 
-            // Dummy assertion
-            Assert.True(true);
+            _output.WriteLine("✅ Message sent successfully.");
+            Assert.True(true); // Dummy assertion for test success
         }
     }
 }

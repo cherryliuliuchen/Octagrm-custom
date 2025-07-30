@@ -1,8 +1,8 @@
-using Octagram.Domain.Entities;
+using Octagram.Application.DTOs;
 
 namespace Octagram.Application.Interfaces;
 
 public interface ISqsService
 {
-    Task SendMessageAsync(Notification notification);
+    Task SendMessageAsync(NotificationDto notificationDto);
 }

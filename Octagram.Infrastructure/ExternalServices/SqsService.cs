@@ -1,44 +1,44 @@
+// SqsService.cs
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Microsoft.Extensions.Configuration;
+using Octagram.Application.DTOs;
 using Octagram.Application.Interfaces;
 using System.Text.Json;
-using Octagram.Domain.Entities;
 
-namespace Octagram.Infrastructure.ExternalServices
+namespace Octagram.Infrastructure.ExternalServices;
+
+public class SqsService : ISqsService
 {
-    public class SqsService : ISqsService
+    private readonly IAmazonSQS _sqsClient;
+    private readonly string _queueUrl;
+
+    public SqsService()
     {
-        private readonly IAmazonSQS _sqsClient;
-        private readonly string _queueUrl;
 
-        public SqsService(IConfiguration configuration)
+        string accessKey = "123456";
+        string secretKey = "xQ+123456";
+        string region = "eu-north-1";
+        _queueUrl = "https://sqs.eu-north-1.amazonaws.com/123456/OctagramNotificationQueueNew";
+
+        var config = new AmazonSQSConfig
         {
-            var config = new AmazonSQSConfig
-            {
-                RegionEndpoint = Amazon.RegionEndpoint.EUNorth1
-            };
+            RegionEndpoint = Amazon.RegionEndpoint.GetBySystemName(region)
+        };
 
-            _sqsClient = new AmazonSQSClient(
-                configuration["Aws:AccessKey"],
-                configuration["Aws:SecretKey"],
-                config
-            );
+        _sqsClient = new AmazonSQSClient(accessKey, secretKey, config);
+    }
 
-            _queueUrl = configuration["Aws:QueueUrl"];
-        }
+    public async Task SendMessageAsync(NotificationDto notificationDto)
+    {
+        var messageBody = JsonSerializer.Serialize(notificationDto);
 
-        public async Task SendMessageAsync(Notification message)
+        var request = new SendMessageRequest
         {
-            var messageBody = JsonSerializer.Serialize(message);
+            QueueUrl = _queueUrl,
+            MessageBody = messageBody
+        };
 
-            var request = new SendMessageRequest
-            {
-                QueueUrl = _queueUrl,
-                MessageBody = messageBody
-            };
-
-            await _sqsClient.SendMessageAsync(request);
-        }
+        await _sqsClient.SendMessageAsync(request);
     }
 }

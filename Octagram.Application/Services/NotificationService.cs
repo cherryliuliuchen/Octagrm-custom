@@ -46,7 +46,8 @@ public class NotificationService(
         Console.WriteLine($"[1] Notification CREATED at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}, Type={notification.Type}");
         await notificationRepository.AddAsync(notification);
         Console.WriteLine($"[2] Notification SAVED to DB at {DateTime.UtcNow:O} | RecipientId={notification.RecipientId}");
-        await _sqsService.SendMessageAsync(notification);
+        var dto = mapper.Map<NotificationDto>(notification);
+        await _sqsService.SendMessageAsync(dto);
         Console.WriteLine($"[3] Notification SENT to SQS at {DateTime.UtcNow:O} | MessageId={notification.MessageId}");
     }
 
